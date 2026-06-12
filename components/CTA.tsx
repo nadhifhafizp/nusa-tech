@@ -1,140 +1,82 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import { ArrowRight, Sparkles, MapPin } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, MapPin } from "lucide-react";
 
 export default function CTA() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-  const [hovered, setHovered] = useState(false);
-
   return (
     <section
       id="bergabung"
-      className="relative bg-secondary py-28 md:py-40 px-6 overflow-hidden"
+      className="relative w-full h-screen flex flex-col items-center justify-center px-6"
     >
-      {/* ── Latar artistik: gradien besar merah + emas ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-gradient-radial from-primary/20 via-accent/5 to-transparent blur-3xl" />
-        {/* Garis dekoratif horizontal */}
+      <div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center">
+        
         <motion.div
-          className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"
-          animate={{ scaleX: [0, 1], opacity: [0, 1, 0.5] }}
-          transition={{ duration: 3, repeat: Infinity, repeatType: "mirror" }}
-        />
-      </div>
-
-      <motion.div
-        ref={ref}
-        className="relative z-10 max-w-3xl mx-auto text-center"
-        initial={{ opacity: 0, y: 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-      >
-        {/* Eye-catcher */}
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={isInView ? { scale: 1 } : {}}
-          transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-          className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent mb-8 shadow-lg glow-gold"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="mb-6"
         >
-          <Sparkles size={28} className="text-secondary" />
+          <span className="px-4 py-1.5 rounded-full border border-primary/40 bg-primary/5 text-primary text-xs font-mono tracking-widest uppercase backdrop-blur-xs">
+            // JOIN THE MOVEMENT
+          </span>
         </motion.div>
 
-        {/* Headline CTA */}
+        {/* Teks Klimaks Brutalis */}
         <motion.h2
-          className="font-sans font-extrabold text-4xl md:text-6xl text-surface leading-tight mb-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          className="font-sans font-black text-4xl md:text-8xl text-white uppercase leading-[0.95] tracking-tight mb-8"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          Indonesia Tidak Butuh
-          <br />
-          <span className="text-gradient-red-gold">Penonton.</span>
-          <br />
-          Indonesia Butuh
-          <span className="text-gradient-red-gold"> Kamu.</span>
+          INDONESIA TIDAK<br />
+          BUTUH PENONTON.<br />
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-accent via-primary to-primary">
+            BUTUH KAMU.
+          </span>
         </motion.h2>
 
-        {/* Body CTA */}
         <motion.p
-          className="font-body text-base md:text-lg text-muted leading-relaxed mb-4 max-w-xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.45 }}
-        >
-          Setiap generasi mendapat momennya. Momen kita adalah sekarang — di era
-          di mana satu baris kode, satu desain, satu ide bisa mengubah nasib
-          satu desa, satu kota, atau satu bangsa.
-        </motion.p>
-
-        <motion.p
-          className="font-body text-sm text-slate-500 mb-12"
+          className="font-body text-base md:text-lg text-white/60 max-w-2xl font-light leading-relaxed mb-12"
           initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.6 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.2 }}
         >
-          Jangan biarkan sejarah mencatat bahwa kamu hanya diam dan menonton
-          saat Indonesia membutuhkanmu. Jadilah bagian dari gerakan ini.
+          Setiap generasi mendapat momentum emasnya. Momentum kita bergulir detik ini juga—era di mana baris kode dan satu gagasan solutifmu mampu mengubah nasib komunitas, desa, hingga peradaban bangsa.
         </motion.p>
 
-        {/* ── Tombol CTA Utama ── */}
+        {/* Tombol CTA Raksasa Super Clean */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ type: "spring", stiffness: 150, delay: 0.7 }}
-          className="inline-block"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.3 }}
         >
           <motion.button
-            className="relative group inline-flex items-center gap-3 px-10 py-5 rounded-full font-extrabold text-lg text-secondary overflow-hidden"
-            onHoverStart={() => setHovered(true)}
-            onHoverEnd={() => setHovered(false)}
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.97 }}
-           style={{
-            backgroundImage: hovered
-                ? "linear-gradient(135deg, #FFD60A 0%, #E63946 60%, #FFD60A 100%)"
-                : "linear-gradient(135deg, #E63946 0%, #FFD60A 100%)",
-            backgroundColor: "transparent",   // pisahkan dari shorthand
-            transition: "background-image 0.4s ease",
-            }}
-            onClick={() =>
-              window.open("mailto:bergabung@mahreenindonesia.id", "_blank")
-            }
+            className="group inline-flex items-center gap-3 px-10 py-5 bg-white text-[#050508] font-black text-base uppercase tracking-wider rounded-full hover:bg-primary hover:text-white transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:shadow-primary/40"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => window.open("mailto:bergabung@mahreenindonesia.id", "_blank")}
           >
-            {/* Efek glow animasi */}
-            <motion.span
-              className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100"
-              style={{
-                background:
-                  "radial-gradient(ellipse at center, rgba(255,255,255,0.3), transparent)",
-              }}
-              animate={hovered ? { scale: [1, 1.5], opacity: [0.4, 0] } : {}}
-              transition={{ duration: 0.6, repeat: hovered ? Infinity : 0 }}
-            />
-
             <span>Mulai Inovasimu Sekarang</span>
-            <motion.span
-              animate={hovered ? { x: [0, 5, 0] } : {}}
-              transition={{ duration: 0.5, repeat: hovered ? Infinity : 0 }}
-            >
-              <ArrowRight size={20} />
-            </motion.span>
+            <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
           </motion.button>
         </motion.div>
 
-        {/* Social proof mini */}
+        {/* Mini Footer / Identity Note */}
         <motion.p
-          className="mt-6 text-xs text-muted/60 flex items-center justify-center gap-1"
+          className="mt-8 text-white/30 text-xs font-mono tracking-wide flex items-center gap-1.5"
           initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.9 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
         >
-          <MapPin size={11} />
-          Untuk seluruh pemuda Indonesia, dari Sabang sampai Merauke.
+          <MapPin size={12} className="text-accent" />
+          DARI SABANG SAMPAI MERAUKE, SEGERA AMBIL PERANMU.
         </motion.p>
-      </motion.div>
+      </div>
     </section>
   );
 }

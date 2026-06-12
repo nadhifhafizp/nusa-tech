@@ -1,69 +1,39 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Zap } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Navbar() {
-  const { scrollY } = useScroll();
-  const bgOpacity = useTransform(scrollY, [0, 80], [0, 1]);
-
   return (
-    <motion.header
-      className="fixed top-0 left-0 right-0 z-50"
-      style={{
-        backgroundColor: `rgba(10, 15, 30, ${bgOpacity.get()})`,
-        backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(255,255,255,0.05)",
-      }}
-    >
-      {/* Re-render on scroll untuk efek transparan → solid */}
-      <NavbarInner />
-    </motion.header>
-  );
-}
-
-function NavbarInner() {
-  const { scrollY } = useScroll();
-  const bgOpacity = useTransform(scrollY, [0, 80], [0, 0.95]);
-
-  return (
-    <motion.div
-      className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between"
-      style={{ backgroundColor: `rgba(10, 15, 30, 0)` }}
-    >
-      {/* Logo */}
-      <div className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-          <Zap size={16} className="text-secondary" fill="currentColor" />
+    <header className="fixed top-0 left-0 right-0 z-50 bg-secondary/40 backdrop-blur-md border-b border-white/5">
+      <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+        {/* Logo Spylt Style */}
+        <div className="flex items-center">
+          <span className="font-sans font-black text-xl tracking-tighter text-white uppercase">
+            MAHREEN<span className="text-primary ml-0.5">INDONESIA</span>
+          </span>
         </div>
-        <span className="font-bold text-sm tracking-wide text-surface">
-          MAHREEN
-          <span className="text-gradient-red-gold ml-1">INDONESIA</span>
-        </span>
+
+        {/* Nav Links */}
+        <nav className="hidden md:flex items-center gap-10">
+          {["Program", "Dampak", "Bergabung"].map((item) => (
+            <a
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              className="text-xs font-black uppercase text-slate-400 hover:text-white tracking-widest transition-colors duration-200"
+            >
+              {item}
+            </a>
+          ))}
+        </nav>
+
+        {/* CTA Button */}
+        <a
+          href="#bergabung"
+          className="text-xs font-black uppercase px-6 py-2.5 rounded-full bg-primary text-white hover:bg-white hover:text-black transition-all duration-300 tracking-wider"
+        >
+          JOIN CLUB
+        </a>
       </div>
-
-      {/* Nav Links */}
-      <nav className="hidden md:flex items-center gap-8">
-        {["Program", "Dampak", "Bergabung"].map((item) => (
-          <a
-            key={item}
-            href={`#${item.toLowerCase()}`}
-            className="text-sm text-muted hover:text-surface transition-colors duration-200 tracking-wide"
-          >
-            {item}
-          </a>
-        ))}
-      </nav>
-
-      {/* CTA Button */}
-      <motion.a
-        href="#bergabung"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.97 }}
-        className="hidden md:block text-sm font-semibold px-5 py-2 rounded-full bg-primary text-white glow-red transition-all duration-200"
-      >
-        Bergabung
-      </motion.a>
-    </motion.div>
+    </header>
   );
 }
