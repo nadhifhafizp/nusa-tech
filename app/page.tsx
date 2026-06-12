@@ -15,120 +15,105 @@ export default function HomePage() {
     offset: ["start start", "end end"]
   });
 
-  // ─── ANIMASI PETA DUNIA (Hero -> About) ───
-  // Scale membesar drastis seolah kamera melesat turun ke bumi
-  const worldScale = useTransform(scrollYProgress, [0, 0.4], [1, 7]);
-  // Dunia memudar saat sudah terlalu dekat
-  const worldOpacity = useTransform(scrollYProgress, [0.2, 0.4], [0.3, 0]);
+  // ─── STAGE 1: GLOBE DUNIA ───
+  const globeScale = useTransform(scrollYProgress, [0, 0.4], [1, 4]);
+  const globeOpacity = useTransform(scrollYProgress, [0, 0.25, 0.4], [0.8, 0.4, 0]);
 
-  // ─── ANIMASI PETA INDONESIA (About -> CTA) ───
-  // Muncul perlahan menggantikan peta dunia
-  const indoOpacity = useTransform(scrollYProgress, [0.3, 0.5], [0, 0.8]);
-  // Terus nge-zoom halus sampai halaman bawah
-  const indoScale = useTransform(scrollYProgress, [0.3, 1], [0.5, 1.8]);
-  // Bergeser ke atas dikit pas di CTA biar dinamis
-  const indoY = useTransform(scrollYProgress, [0.5, 1], ["0%", "-20%"]);
+  // ─── STAGE 2: PETA INDONESIA ───
+  const indoOpacity = useTransform(scrollYProgress, [0.25, 0.4, 0.7, 0.8], [0, 1, 1, 0]);
+  const indoScale = useTransform(scrollYProgress, [0.25, 0.8], [0.8, 3]);
 
-  // Transisi Warna Background Global
+  // ─── STAGE 3: CORE HUB RADAR IBU KOTA ───
+  const capitalOpacity = useTransform(scrollYProgress, [0.7, 0.85], [0, 1]);
+  const capitalScale = useTransform(scrollYProgress, [0.7, 1], [0.5, 1.2]);
+
+  // Transisi Warna Latar Belakang (Gelap Mulus)
   const bgColor = useTransform(
     scrollYProgress,
-    [0, 0.5, 1],
-    ["#050508", "#0a0505", "#0f0505"] // Hitam ke Merah Gelap
+    [0, 0.4, 0.8],
+    ["#030305", "#06060c", "#080202"]
   );
 
   return (
     <motion.main 
       ref={containerRef}
-      className="relative min-h-screen overflow-x-hidden"
+      className="relative min-h-screen overflow-x-hidden text-white selection:bg-primary/30"
       style={{ backgroundColor: bgColor }}
     >
-      {/* ── PARALLAX BACKGROUND CANVAS ── */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-center">
+      {/* ── CENTRAL BACKGROUND CANVAS (CLEAN) ── */}
+      <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center overflow-hidden">
         
-        {/* Latar Belakang Bintang/Grid Tipis */}
-        <div 
-          className="absolute inset-0 opacity-[0.08] w-[100%] h-[100%]" 
-          style={{ 
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #ffffff 1.5px, transparent 0)', 
-            backgroundSize: '40px 40px' 
-          }} 
-        />
+        {/* TITIK-TITIK SUDAH DIHAPUS DARI SINI */}
 
-        {/* 1. LAYER PETA DUNIA (Abstraksi) */}
+        {/* LAYER 1: PETA DUNIA */}
         <motion.div
-          className="absolute inset-0 flex items-center justify-center"
-          // transformOrigin diarahkan ke koordinat Asia Tenggara/Indonesia di map
-          style={{ scale: worldScale, opacity: worldOpacity, transformOrigin: "73% 60%" }}
+          className="absolute flex items-center justify-center w-full h-full"
+          style={{ scale: globeScale, opacity: globeOpacity }}
         >
-          {/* Menggunakan SVG Peta Dunia Titik-Titik (Dotted World Map Style) */}
-          <svg viewBox="0 0 1000 500" className="w-[120vw] max-w-none opacity-50" fill="rgba(255,255,255,0.4)">
-            {/* Amerika Utara */}
-            <circle cx="200" cy="150" r="15" /> <circle cx="250" cy="180" r="20" /> <circle cx="180" cy="220" r="12" />
-            {/* Amerika Selatan */}
-            <circle cx="280" cy="300" r="18" /> <circle cx="320" cy="360" r="10" />
-            {/* Eropa & Afrika */}
-            <circle cx="500" cy="140" r="15" /> <circle cx="520" cy="250" r="25" /> <circle cx="480" cy="320" r="15" />
-            {/* Asia (Pusat Zooming) */}
-            <circle cx="680" cy="150" r="30" /> <circle cx="750" cy="200" r="20" />
-            {/* Area Indonesia (Bakal jadi fokus) */}
-            <circle cx="780" cy="280" r="5" fill="#E63946" /> <circle cx="800" cy="290" r="4" fill="#FFD60A" /> <circle cx="830" cy="285" r="5" fill="#E63946" />
-            {/* Australia */}
-            <circle cx="850" cy="380" r="18" />
-          </svg>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg" 
+            alt="World Map"
+            className="w-[150vw] max-w-none opacity-50 md:w-[100vw]"
+            style={{ filter: "invert(1) brightness(2) drop-shadow(0px 0px 15px rgba(255,255,255,0.2))" }}
+          />
         </motion.div>
 
-        {/* 2. LAYER PETA INDONESIA (Detail & Glowing) */}
+        {/* LAYER 2: PETA INDONESIA */}
         <motion.div
-          className="absolute inset-0 flex items-center justify-center"
-          style={{ scale: indoScale, opacity: indoOpacity, y: indoY }}
+          className="absolute flex items-center justify-center w-full h-full"
+          style={{ scale: indoScale, opacity: indoOpacity }}
         >
-          {/* Peta Indonesia Cyberpunk dengan Garis Koneksi */}
-          <svg className="w-full h-full max-w-5xl" viewBox="0 0 1000 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g className="animate-pulse">
-              {/* Garis Khatulistiwa */}
-              <line x1="0" y1="200" x2="1000" y2="200" stroke="rgba(255,214,10,0.15)" strokeWidth="1" strokeDasharray="4 4" />
-              
-              {/* Node Utama Indonesia */}
-              <circle cx="250" cy="180" r="8" fill="#E63946" className="shadow-lg" /> {/* Sumatera */}
-              <circle cx="380" cy="260" r="10" fill="#FFD60A" /> {/* Jakarta/Jawa */}
-              <circle cx="480" cy="160" r="8" fill="#ffffff" /> {/* Kalimantan */}
-              <circle cx="600" cy="190" r="7" fill="#E63946" /> {/* Sulawesi */}
-              <circle cx="750" cy="270" r="6" fill="#FFD60A" /> {/* Bali/Nusa Tenggara */}
-              <circle cx="880" cy="210" r="9" fill="#ffffff" /> {/* Papua */}
-
-              {/* Node-node kecil pendukung */}
-              <circle cx="220" cy="150" r="3" fill="#E63946" opacity="0.6"/>
-              <circle cx="430" cy="270" r="4" fill="#FFD60A" opacity="0.6"/>
-              <circle cx="500" cy="130" r="3" fill="#ffffff" opacity="0.6"/>
-              <circle cx="630" cy="160" r="4" fill="#E63946" opacity="0.6"/>
-
-              {/* Garis Sirkuit Menghubungkan Pulau (Digital Network) */}
-              <path d="M250 180 L380 260 M380 260 L480 160 M480 160 L600 190 M600 190 L880 210 M380 260 L600 190 M600 190 L750 270" 
-                stroke="rgba(255,255,255,0.15)" strokeWidth="2" strokeDasharray="8 4" />
-            </g>
-          </svg>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Indonesia_blank_map.svg" 
+            alt="Indonesia Map"
+            className="w-[120vw] max-w-none opacity-80 md:w-[80vw]"
+            style={{ filter: "invert(1) brightness(2.5) drop-shadow(0px 0px 25px rgba(230,57,70,0.6))" }}
+          />
         </motion.div>
 
-        {/* Glow Merah & Emas Global */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-linear-to-tr from-[#E63946]/10 to-[#FFD60A]/5 blur-[200px] mix-blend-screen" />
+        {/* LAYER 3: RADAR DIGITAL CORE CENTER */}
+        <motion.div
+          className="absolute flex items-center justify-center"
+          style={{ scale: capitalScale, opacity: capitalOpacity }}
+        >
+          <div className="relative w-[400px] h-[400px] md:w-[600px] md:h-[600px] flex items-center justify-center">
+            <div className="absolute w-[100%] h-[100%] rounded-full border border-primary/30 shadow-[0_0_30px_rgba(230,57,70,0.2)] animate-[spin_60s_linear_infinite]" />
+            <div className="absolute w-[70%] h-[70%] rounded-full border border-dashed border-accent/30 animate-[spin_30s_linear_infinite_reverse]" />
+            <div className="absolute w-[40%] h-[40%] rounded-full border border-primary/50 flex items-center justify-center shadow-[inset_0_0_40px_rgba(230,57,70,0.3)]">
+              <div className="w-6 h-6 bg-accent rounded-full shadow-[0_0_40px_#FFD60A] animate-ping" />
+              <div className="absolute w-4 h-4 bg-primary rounded-full shadow-[0_0_20px_#E63946]" />
+            </div>
+            {/* Garis radar silang (bukan titik) */}
+            <svg className="absolute inset-0 w-full h-full opacity-50">
+              <line x1="50%" y1="0%" x2="50%" y2="100%" stroke="#E63946" strokeWidth="1" strokeDasharray="5 5" />
+              <line x1="0%" y1="50%" x2="100%" y2="50%" stroke="#FFD60A" strokeWidth="1" strokeDasharray="5 5" />
+            </svg>
+          </div>
+        </motion.div>
+
+        {/* Global Ambient Glow (Cahaya Merah Halus) */}
+        <div className="absolute w-[800px] h-[800px] rounded-full bg-radial from-primary/10 via-transparent to-transparent blur-3xl mix-blend-screen pointer-events-none opacity-60" />
       </div>
 
-      {/* ── FOREGROUND CONTENT ── */}
+      {/* ── FOREGROUND INTERACTIVE CONTENT ── */}
       <div className="relative z-10 w-full">
         <Navbar />
         <Hero />
         <About />
         <CTA />
 
-        {/* Footer Minimalis */}
-        <footer className="relative bg-[#050508]/80 border-t border-white/5 py-10 px-6 backdrop-blur-md">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-white/50 font-mono tracking-wide">
-              © {new Date().getFullYear()} MAHREEN INDONESIA. DIBUAT DENGAN EMOSI & KODE UNTUK NEGERI.
+        {/* Footer */}
+        <footer className="relative bg-black/60 border-t border-white/5 py-12 px-6 backdrop-blur-xl">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <p className="text-xs text-white/40 font-mono tracking-wide">
+              © {new Date().getFullYear()} MAHREEN INDONESIA. ARCHITECTED FOR NEXT-GEN TRANSFORMATION.
             </p>
-            <p className="text-xs text-white/30 font-mono">
-              #BerkaryaUntukIndonesia · #NusaTech
-            </p>
+            <div className="flex gap-6 font-mono text-[10px] text-white/30 tracking-widest uppercase">
+              <span>[ SECURE_ACCESS ]</span>
+              <span>[ V4_ENGINE ]</span>
+            </div>
           </div>
         </footer>
       </div>
